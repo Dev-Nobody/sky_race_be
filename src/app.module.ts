@@ -7,6 +7,12 @@ import { User } from './db/entities/user.entity';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { UsersModule } from './users/users.module';
+import { TournamentsModule } from './tournaments/tournaments.module';
+import { ParticipantsModule } from './participants/participants.module';
+import { PiegonsModule } from './piegons/piegons.module';
+import { ResultsModule } from './results/results.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -42,6 +48,12 @@ import { ThrottlerModule } from '@nestjs/throttler';
       synchronize: true, // disable in production
       entities: [User],
     }),
+    UsersModule,
+    TournamentsModule,
+    ParticipantsModule,
+    PiegonsModule,
+    ResultsModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
