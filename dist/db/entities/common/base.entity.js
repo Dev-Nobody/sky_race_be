@@ -13,8 +13,8 @@ exports.BaseEntity = void 0;
 const typeorm_1 = require("typeorm");
 class BaseEntity extends typeorm_1.BaseEntity {
     id;
-    createdAt;
-    updatedAt;
+    created_at;
+    updated_at;
 }
 exports.BaseEntity = BaseEntity;
 __decorate([
@@ -22,11 +22,11 @@ __decorate([
     __metadata("design:type", Number)
 ], BaseEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)({ type: 'timestamp' }),
+    (0, typeorm_1.CreateDateColumn)({ type: "timestamp" }),
     __metadata("design:type", Date)
-], BaseEntity.prototype, "createdAt", void 0);
+], BaseEntity.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)({ type: 'timestamp' }),
+    (0, typeorm_1.UpdateDateColumn)({ type: "timestamp" }),
     __metadata("design:type", Date)
-], BaseEntity.prototype, "updatedAt", void 0);
+], BaseEntity.prototype, "updated_at", void 0);
 //# sourceMappingURL=base.entity.js.map

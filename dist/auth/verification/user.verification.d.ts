@@ -1,6 +1,6 @@
-import { ConfigService } from '@nestjs/config';
-import { User } from 'src/db/entities/user.entity';
-import { Repository } from 'typeorm';
+import { ConfigService } from "@nestjs/config";
+import { User } from "src/db/entities/user.entity";
+import { Repository } from "typeorm";
 export declare class VerificationService {
     private config;
     private userRepo;

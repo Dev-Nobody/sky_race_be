@@ -1,16 +1,16 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { InjectRepository } from '@nestjs/typeorm';
-import * as nodemailer from 'nodemailer';
-import { User } from 'src/db/entities/user.entity';
-import { Repository } from 'typeorm';
+import { Injectable, BadRequestException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { InjectRepository } from "@nestjs/typeorm";
+import * as nodemailer from "nodemailer";
+import { User } from "src/db/entities/user.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class VerificationService {
   constructor(
     private config: ConfigService,
     @InjectRepository(User)
-    private userRepo: Repository<User>,
+    private userRepo: Repository<User>
   ) {}
 
   async generateOtp(): Promise<string> {
@@ -18,19 +18,20 @@ export class VerificationService {
   }
 
   async sendOtpEmail(email: string, otp: string): Promise<void> {
+    console.log(email);
     const transport = nodemailer.createTransport({
-      host: 'sandbox.smtp.mailtrap.io',
+      host: "sandbox.smtp.mailtrap.io",
       port: 2525,
       auth: {
-        user: '77152036bc2e27',
-        pass: 'e0ec8aa46ed0a7',
+        user: "77152036bc2e27",
+        pass: "e0ec8aa46ed0a7",
       },
     });
 
     const mailOptions = {
       from: '"Your App Name" <no-reply@yourapp.com>',
       to: email,
-      subject: 'Verify Your Email Address',
+      subject: "Verify Your Email Address",
       html: `
         <p>Dear User,</p>
         <p>Thank you for registering with us.</p>
@@ -45,24 +46,24 @@ export class VerificationService {
     try {
       await transport.sendMail(mailOptions);
     } catch (error) {
-      console.error('Error sending email: ', error);
+      console.error("Error sending email: ", error);
     }
   }
 
   async sendPasswordResetOtpEmail(email: string, otp: string): Promise<void> {
     const transport = nodemailer.createTransport({
-      host: 'sandbox.smtp.mailtrap.io',
+      host: "sandbox.smtp.mailtrap.io",
       port: 2525,
       auth: {
-        user: '77152036bc2e27',
-        pass: 'e0ec8aa46ed0a7',
+        user: "77152036bc2e27",
+        pass: "e0ec8aa46ed0a7",
       },
     });
 
     const mailOptions = {
       from: '"Your App Name" <no-reply@yourapp.com>',
       to: email,
-      subject: 'Password Reset Request',
+      subject: "Password Reset Request",
       html: `
         <p>Dear User,</p>
         <p>We received a request to reset the password associated with this email address.</p>
@@ -77,7 +78,7 @@ export class VerificationService {
     try {
       await transport.sendMail(mailOptions);
     } catch (error) {
-      console.error('Error sending password reset email: ', error);
+      console.error("Error sending password reset email: ", error);
     }
   }
 
@@ -85,15 +86,15 @@ export class VerificationService {
     const user = await this.userRepo.findOne({ where: { email } });
 
     if (!user) {
-      throw new BadRequestException('User not found');
+      throw new BadRequestException("User not found");
     }
 
     if (user.otp_code !== otp) {
-      throw new BadRequestException('Invalid OTP');
+      throw new BadRequestException("Invalid OTP");
     }
 
     user.is_verified = true;
-    user.otp_code = '';
+    user.otp_code = "";
 
     await this.userRepo.save(user);
   }

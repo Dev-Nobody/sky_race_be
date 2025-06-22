@@ -30,18 +30,19 @@ let VerificationService = class VerificationService {
         return Math.floor(100000 + Math.random() * 900000).toString();
     }
     async sendOtpEmail(email, otp) {
+        console.log(email);
         const transport = nodemailer.createTransport({
-            host: 'sandbox.smtp.mailtrap.io',
+            host: "sandbox.smtp.mailtrap.io",
             port: 2525,
             auth: {
-                user: '77152036bc2e27',
-                pass: 'e0ec8aa46ed0a7',
+                user: "77152036bc2e27",
+                pass: "e0ec8aa46ed0a7",
             },
         });
         const mailOptions = {
             from: '"Your App Name" <no-reply@yourapp.com>',
             to: email,
-            subject: 'Verify Your Email Address',
+            subject: "Verify Your Email Address",
             html: `
         <p>Dear User,</p>
         <p>Thank you for registering with us.</p>
@@ -56,22 +57,22 @@ let VerificationService = class VerificationService {
             await transport.sendMail(mailOptions);
         }
         catch (error) {
-            console.error('Error sending email: ', error);
+            console.error("Error sending email: ", error);
         }
     }
     async sendPasswordResetOtpEmail(email, otp) {
         const transport = nodemailer.createTransport({
-            host: 'sandbox.smtp.mailtrap.io',
+            host: "sandbox.smtp.mailtrap.io",
             port: 2525,
             auth: {
-                user: '77152036bc2e27',
-                pass: 'e0ec8aa46ed0a7',
+                user: "77152036bc2e27",
+                pass: "e0ec8aa46ed0a7",
             },
         });
         const mailOptions = {
             from: '"Your App Name" <no-reply@yourapp.com>',
             to: email,
-            subject: 'Password Reset Request',
+            subject: "Password Reset Request",
             html: `
         <p>Dear User,</p>
         <p>We received a request to reset the password associated with this email address.</p>
@@ -86,19 +87,19 @@ let VerificationService = class VerificationService {
             await transport.sendMail(mailOptions);
         }
         catch (error) {
-            console.error('Error sending password reset email: ', error);
+            console.error("Error sending password reset email: ", error);
         }
     }
     async verifyOtp(email, otp) {
         const user = await this.userRepo.findOne({ where: { email } });
         if (!user) {
-            throw new common_1.BadRequestException('User not found');
+            throw new common_1.BadRequestException("User not found");
         }
         if (user.otp_code !== otp) {
-            throw new common_1.BadRequestException('Invalid OTP');
+            throw new common_1.BadRequestException("Invalid OTP");
         }
         user.is_verified = true;
-        user.otp_code = '';
+        user.otp_code = "";
         await this.userRepo.save(user);
     }
 };

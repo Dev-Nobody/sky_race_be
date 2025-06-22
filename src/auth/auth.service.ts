@@ -2,21 +2,21 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-} from '@nestjs/common';
-import * as argon from 'argon2';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
+} from "@nestjs/common";
+import * as argon from "argon2";
+import { ConfigService } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
 import {
   LoginDto,
   RegisterDto,
   ResetPasswordDto,
   VerifyandResetPasswordDto,
   VerifyEmailDto,
-} from './dto/create-auth.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/db/entities/user.entity';
-import { Repository } from 'typeorm';
-import { VerificationService } from './verification/user.verification';
+} from "./dto/create-auth.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "src/db/entities/user.entity";
+import { Repository } from "typeorm";
+import { VerificationService } from "./verification/user.verification";
 
 @Injectable()
 export class AuthService {
@@ -25,13 +25,13 @@ export class AuthService {
     private userRepo: Repository<User>,
     private config: ConfigService,
     private verifcationService: VerificationService,
-    private jwt: JwtService,
+    private jwt: JwtService
   ) {}
 
   async register(dto: RegisterDto) {
     // Check if passwords match
     if (dto.password !== dto.confirm_password) {
-      throw new BadRequestException('Passwords do not match.');
+      throw new BadRequestException("Passwords do not match.");
     }
 
     // Check if user already exists
@@ -40,7 +40,7 @@ export class AuthService {
     });
     if (existingUser) {
       throw new BadRequestException(
-        'An account with this email already exists. Please log in.',
+        "An account with this email already exists. Please log in."
       );
     }
 
@@ -67,7 +67,7 @@ export class AuthService {
 
   async verifyEmail(dto: VerifyEmailDto) {
     await this.verifcationService.verifyOtp(dto.email, dto.otp);
-    return { message: 'Email verified successfully.' };
+    return { message: "Email verified successfully." };
   }
 
   async login(dto: LoginDto) {
@@ -77,22 +77,22 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new ForbiddenException('Credentials incorrect');
+      throw new ForbiddenException("Credentials incorrect");
     }
 
     if (!user.is_verified) {
-      throw new ForbiddenException('User is not verified');
+      throw new ForbiddenException("User is not verified");
     }
 
     // Verify password
     const passMatch = await argon.verify(user.password_hash, dto.password);
 
     if (!passMatch) {
-      throw new ForbiddenException('Credentials incorrect');
+      throw new ForbiddenException("Credentials incorrect");
     }
 
     // Return signed JWT token
-    return this.signToken(user.id, user.email);
+    return this.signToken(user.id, user.email, user.role);
   }
 
   // Step 1: Request OTP for Password Reset
@@ -110,7 +110,7 @@ export class AuthService {
     // Send OTP via email
     await this.verifcationService.sendPasswordResetOtpEmail(dto.email, otp);
 
-    return { message: 'Check your email for OTP.' };
+    return { message: "Check your email for OTP." };
   }
 
   // Step 2: Verify OTP and Reset Password
@@ -124,10 +124,10 @@ export class AuthService {
     const hashedPassword = await argon.hash(dto.newPassword);
 
     user.password_hash = hashedPassword;
-    user.otp_code = ''; // clear OTP
+    user.otp_code = ""; // clear OTP
     await this.userRepo.save(user);
 
-    return { message: 'Password reset successfully.' };
+    return { message: "Password reset successfully." };
   }
 
   async resendOtpCode(dto: ResetPasswordDto) {
@@ -135,7 +135,7 @@ export class AuthService {
       const user = await this.userRepo.findOne({ where: { email: dto.email } });
 
       if (!user) {
-        throw new ForbiddenException('User does not exist');
+        throw new ForbiddenException("User does not exist");
       }
 
       const otp = await this.verifcationService.generateOtp();
@@ -144,10 +144,10 @@ export class AuthService {
       await this.userRepo.save(user);
 
       await this.verifcationService.sendOtpEmail(dto.email, otp);
-      return 'OTP has been resent. Check your email.';
+      return "OTP has been resent. Check your email.";
     } catch (error) {
       return {
-        error: error.message || 'An error occurred while resending OTP.',
+        error: error.message || "An error occurred while resending OTP.",
       };
     }
   }
@@ -156,16 +156,18 @@ export class AuthService {
   async signToken(
     userId: number,
     email: string,
+    role: string
   ): Promise<{ access_token: string }> {
     const payload = {
       id: userId,
       email: email,
+      role: role,
     };
 
-    const secret = this.config.get('JWT_SECRET');
+    const secret = this.config.get("JWT_SECRET");
 
     const token = await this.jwt.signAsync(payload, {
-      expiresIn: '1h',
+      expiresIn: "7d",
       secret: secret,
     });
     return {

@@ -4,10 +4,18 @@ import {
   Column,
   Index,
   OneToMany,
-} from 'typeorm';
-import { BaseEntity } from './common/base.entity';
+} from "typeorm";
+import { BaseEntity } from "./common/base.entity";
+import { Tournament } from "./tournament.entity";
+// import { Loft } from "./loft.entity";
 
-@Entity('users')
+export enum UserRole {
+  ADMIN = "admin",
+  ORGANIZER = "organizer",
+  USER = "user",
+}
+
+@Entity("users")
 export class User extends BaseEntity {
   @Column({ length: 255 })
   full_name: string;
@@ -18,9 +26,22 @@ export class User extends BaseEntity {
   @Column()
   password_hash: string;
 
-  @Column('boolean', { default: false })
+  @Column({
+    type: "enum",
+    enum: UserRole,
+    default: UserRole.USER,
+  })
+  role: UserRole;
+
+  @Column("boolean", { default: false })
   is_verified: boolean;
 
   @Column({ nullable: true })
   otp_code: string; // Optional OTP for verification process
+
+  @OneToMany(() => Tournament, (tournament) => tournament.organizer)
+  tournaments: Tournament[];
+
+  // @OneToMany(() => Loft, (loft) => loft.user)
+  // lofts: Loft[];
 }

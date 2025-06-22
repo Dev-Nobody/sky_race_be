@@ -15,18 +15,20 @@ const user_entity_1 = require("../db/entities/user.entity");
 const jwt_1 = require("@nestjs/jwt");
 const passport_1 = require("@nestjs/passport");
 const user_verification_1 = require("./verification/user.verification");
+const jwt_strategy_1 = require("../common/strategies/jwt.strategy");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            passport_1.PassportModule.register({ defaultStrategy: 'jwt' }),
-            jwt_1.JwtModule.register({ privateKey: '' }),
+            passport_1.PassportModule.register({ defaultStrategy: "jwt" }),
+            jwt_1.JwtModule.register({ privateKey: "" }),
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
         ],
-        providers: [auth_service_1.AuthService, user_verification_1.VerificationService],
+        providers: [auth_service_1.AuthService, user_verification_1.VerificationService, jwt_strategy_1.JwtStrategy],
         controllers: [auth_controller_1.AuthController],
+        exports: [jwt_1.JwtModule, passport_1.PassportModule],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

@@ -34,13 +34,13 @@ let AuthService = class AuthService {
     }
     async register(dto) {
         if (dto.password !== dto.confirm_password) {
-            throw new common_1.BadRequestException('Passwords do not match.');
+            throw new common_1.BadRequestException("Passwords do not match.");
         }
         const existingUser = await this.userRepo.findOne({
             where: { email: dto.email },
         });
         if (existingUser) {
-            throw new common_1.BadRequestException('An account with this email already exists. Please log in.');
+            throw new common_1.BadRequestException("An account with this email already exists. Please log in.");
         }
         const hash = await argon.hash(dto.password);
         const otp = await this.verifcationService.generateOtp();
@@ -57,23 +57,23 @@ let AuthService = class AuthService {
     }
     async verifyEmail(dto) {
         await this.verifcationService.verifyOtp(dto.email, dto.otp);
-        return { message: 'Email verified successfully.' };
+        return { message: "Email verified successfully." };
     }
     async login(dto) {
         const user = await this.userRepo.findOne({
             where: { email: dto.email },
         });
         if (!user) {
-            throw new common_1.ForbiddenException('Credentials incorrect');
+            throw new common_1.ForbiddenException("Credentials incorrect");
         }
         if (!user.is_verified) {
-            throw new common_1.ForbiddenException('User is not verified');
+            throw new common_1.ForbiddenException("User is not verified");
         }
         const passMatch = await argon.verify(user.password_hash, dto.password);
         if (!passMatch) {
-            throw new common_1.ForbiddenException('Credentials incorrect');
+            throw new common_1.ForbiddenException("Credentials incorrect");
         }
-        return this.signToken(user.id, user.email);
+        return this.signToken(user.id, user.email, user.role);
     }
     async requestPasswordReset(dto) {
         const user = await this.userRepo.findOne({ where: { email: dto.email } });
@@ -83,7 +83,7 @@ let AuthService = class AuthService {
         user.otp_code = otp;
         await this.userRepo.save(user);
         await this.verifcationService.sendPasswordResetOtpEmail(dto.email, otp);
-        return { message: 'Check your email for OTP.' };
+        return { message: "Check your email for OTP." };
     }
     async verifyOtpAndResetPassword(dto) {
         await this.verifcationService.verifyOtp(dto.email, dto.otp);
@@ -92,36 +92,37 @@ let AuthService = class AuthService {
             throw new common_1.ForbiddenException("User doesn't exist");
         const hashedPassword = await argon.hash(dto.newPassword);
         user.password_hash = hashedPassword;
-        user.otp_code = '';
+        user.otp_code = "";
         await this.userRepo.save(user);
-        return { message: 'Password reset successfully.' };
+        return { message: "Password reset successfully." };
     }
     async resendOtpCode(dto) {
         try {
             const user = await this.userRepo.findOne({ where: { email: dto.email } });
             if (!user) {
-                throw new common_1.ForbiddenException('User does not exist');
+                throw new common_1.ForbiddenException("User does not exist");
             }
             const otp = await this.verifcationService.generateOtp();
             user.otp_code = otp;
             await this.userRepo.save(user);
             await this.verifcationService.sendOtpEmail(dto.email, otp);
-            return 'OTP has been resent. Check your email.';
+            return "OTP has been resent. Check your email.";
         }
         catch (error) {
             return {
-                error: error.message || 'An error occurred while resending OTP.',
+                error: error.message || "An error occurred while resending OTP.",
             };
         }
     }
-    async signToken(userId, email) {
+    async signToken(userId, email, role) {
         const payload = {
             id: userId,
             email: email,
+            role: role,
         };
-        const secret = this.config.get('JWT_SECRET');
+        const secret = this.config.get("JWT_SECRET");
         const token = await this.jwt.signAsync(payload, {
-            expiresIn: '1h',
+            expiresIn: "7d",
             secret: secret,
         });
         return {

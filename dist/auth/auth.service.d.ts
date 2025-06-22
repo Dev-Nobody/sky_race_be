@@ -1,9 +1,9 @@
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
-import { LoginDto, RegisterDto, ResetPasswordDto, VerifyandResetPasswordDto, VerifyEmailDto } from './dto/create-auth.dto';
-import { User } from 'src/db/entities/user.entity';
-import { Repository } from 'typeorm';
-import { VerificationService } from './verification/user.verification';
+import { ConfigService } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
+import { LoginDto, RegisterDto, ResetPasswordDto, VerifyandResetPasswordDto, VerifyEmailDto } from "./dto/create-auth.dto";
+import { User } from "src/db/entities/user.entity";
+import { Repository } from "typeorm";
+import { VerificationService } from "./verification/user.verification";
 export declare class AuthService {
     private userRepo;
     private config;
@@ -26,7 +26,7 @@ export declare class AuthService {
     resendOtpCode(dto: ResetPasswordDto): Promise<"OTP has been resent. Check your email." | {
         error: any;
     }>;
-    signToken(userId: number, email: string): Promise<{
+    signToken(userId: number, email: string, role: string): Promise<{
         access_token: string;
     }>;
 }
