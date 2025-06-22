@@ -5,14 +5,17 @@ import { DayResult } from "./dayResult.entity";
 
 @Entity("tournaments")
 export class Tournament extends BaseEntity {
-  @Column()
+  @Column({ type: "varchar" })
   name: string;
 
   @Column({ type: "timestamp" })
-  start_time: Date;
+  start_date: Date;
 
   @Column({ type: "timestamp" })
-  end_time: Date;
+  end_date: Date;
+
+  @Column({ type: "varchar" })
+  start_time: string;
 
   @ManyToOne(() => User, (user) => user.tournaments)
   organizer: User;

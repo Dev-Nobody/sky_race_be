@@ -3,8 +3,9 @@ import { User } from "./user.entity";
 import { DayResult } from "./dayResult.entity";
 export declare class Tournament extends BaseEntity {
     name: string;
-    start_time: Date;
-    end_time: Date;
+    start_date: Date;
+    end_date: Date;
+    start_time: string;
     organizer: User;
     results: DayResult[];
 }

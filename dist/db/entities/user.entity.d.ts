@@ -1,6 +1,5 @@
 import { BaseEntity } from "./common/base.entity";
 import { Tournament } from "./tournament.entity";
-import { Loft } from "./loft.entity";
 export declare enum UserRole {
     ADMIN = "admin",
     ORGANIZER = "organizer",
@@ -14,5 +13,4 @@ export declare class User extends BaseEntity {
     is_verified: boolean;
     otp_code: string;
     tournaments: Tournament[];
-    lofts: Loft[];
 }

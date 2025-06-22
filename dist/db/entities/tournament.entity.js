@@ -16,24 +16,29 @@ const user_entity_1 = require("./user.entity");
 const dayResult_entity_1 = require("./dayResult.entity");
 let Tournament = class Tournament extends base_entity_1.BaseEntity {
     name;
+    start_date;
+    end_date;
     start_time;
-    end_time;
     organizer;
     results;
 };
 exports.Tournament = Tournament;
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: "varchar" }),
     __metadata("design:type", String)
 ], Tournament.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: "timestamp" }),
     __metadata("design:type", Date)
-], Tournament.prototype, "start_time", void 0);
+], Tournament.prototype, "start_date", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: "timestamp" }),
     __metadata("design:type", Date)
-], Tournament.prototype, "end_time", void 0);
+], Tournament.prototype, "end_date", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "varchar" }),
+    __metadata("design:type", String)
+], Tournament.prototype, "start_time", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.tournaments),
     __metadata("design:type", user_entity_1.User)

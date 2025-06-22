@@ -10,14 +10,16 @@ import { ThrottlerModule } from "@nestjs/throttler";
 import { UsersModule } from "./users/users.module";
 import { TournamentsModule } from "./tournaments/tournaments.module";
 import { ParticipantsModule } from "./participants/participants.module";
-import { PiegonsModule } from "./piegons/piegons.module";
 import { ResultsModule } from "./results/results.module";
 import { AdminModule } from "./admin/admin.module";
 import { DayResult } from "./db/entities/dayResult.entity";
-import { Loft } from "./db/entities/loft.entity";
+// import { Loft } from "./db/entities/loft.entity";
 import { Tournament } from "./db/entities/tournament.entity";
-import { PigeonTime } from "./db/entities/piegonTime.entity";
-import { Pigeon } from "./db/entities/piegon.entity";
+import { Participant } from "./db/entities/participants.entity";
+import { PigeonsModule } from "./pigeons/pigeons.module";
+import { Pigeon } from "./db/entities/pigeon.entity";
+import { PigeonTime } from "./db/entities/pigeonTime.entity";
+import { PigeonTimeModule } from './pigeon-time/pigeon-time.module';
 
 @Module({
   imports: [
@@ -51,14 +53,15 @@ import { Pigeon } from "./db/entities/piegon.entity";
       database: "mine",
       autoLoadEntities: true,
       synchronize: true, // disable in production
-      entities: [User, DayResult, Loft, Pigeon, PigeonTime, Tournament],
+      entities: [User, DayResult, Participant, Pigeon, PigeonTime, Tournament],
     }),
     UsersModule,
     TournamentsModule,
     ParticipantsModule,
-    PiegonsModule,
+    PigeonsModule,
     ResultsModule,
     AdminModule,
+    PigeonTimeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

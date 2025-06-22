@@ -1,12 +1,10 @@
-import { ResultsService } from './results.service';
-import { CreateResultDto } from './dto/create-result.dto';
-import { UpdateResultDto } from './dto/update-result.dto';
+import { ResultsService } from "./results.service";
 export declare class ResultsController {
-    private readonly resultsService;
-    constructor(resultsService: ResultsService);
-    create(createResultDto: CreateResultDto): string;
-    findAll(): string;
-    findOne(id: string): string;
-    update(id: string, updateResultDto: UpdateResultDto): string;
-    remove(id: string): string;
+    private readonly resultService;
+    constructor(resultService: ResultsService);
+    leaderboard(id: number): Promise<{
+        participant_id: number;
+        user_name: string;
+        total_minutes: number;
+    }[]>;
 }

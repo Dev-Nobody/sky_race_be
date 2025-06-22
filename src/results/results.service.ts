@@ -1,26 +1,58 @@
-import { Injectable } from '@nestjs/common';
-import { CreateResultDto } from './dto/create-result.dto';
-import { UpdateResultDto } from './dto/update-result.dto';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Participant } from "src/db/entities/participants.entity";
+import { Pigeon } from "src/db/entities/pigeon.entity";
+import { PigeonTime } from "src/db/entities/pigeonTime.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class ResultsService {
-  create(createResultDto: CreateResultDto) {
-    return 'This action adds a new result';
-  }
+  constructor(
+    @InjectRepository(Participant)
+    private participantRepo: Repository<Participant>,
 
-  findAll() {
-    return `This action returns all results`;
-  }
+    @InjectRepository(Pigeon)
+    private pigeonRepo: Repository<Pigeon>,
 
-  findOne(id: number) {
-    return `This action returns a #${id} result`;
-  }
+    @InjectRepository(PigeonTime)
+    private pigeonTimeRepo: Repository<PigeonTime>
+  ) {}
 
-  update(id: number, updateResultDto: UpdateResultDto) {
-    return `This action updates a #${id} result`;
-  }
+  async getLeaderboard(tournamentId: number) {
+    const participants = await this.participantRepo.find({
+      where: { tournament: { id: tournamentId } },
+      relations: ["user"],
+    });
 
-  remove(id: number) {
-    return `This action removes a #${id} result`;
+    const results = await Promise.all(
+      participants.map(async (participant) => {
+        const pigeons = await this.pigeonRepo.find({
+          where: { participant: { id: participant.id } },
+        });
+
+        let totalMinutes = 0;
+
+        for (const pigeon of pigeons) {
+          const times = await this.pigeonTimeRepo.find({
+            where: { pigeon: { id: pigeon.id } },
+          });
+
+          const pigeonTotal = times.reduce(
+            (sum, t) => sum + (t.duration_minutes || 0),
+            0
+          );
+
+          totalMinutes += pigeonTotal;
+        }
+
+        return {
+          participant_id: participant.id,
+          user_name: participant.user.full_name,
+          total_minutes: totalMinutes,
+        };
+      })
+    );
+
+    return results.sort((a, b) => b.total_minutes - a.total_minutes);
   }
 }

@@ -15,67 +15,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ResultsController = void 0;
 const common_1 = require("@nestjs/common");
 const results_service_1 = require("./results.service");
-const create_result_dto_1 = require("./dto/create-result.dto");
-const update_result_dto_1 = require("./dto/update-result.dto");
 let ResultsController = class ResultsController {
-    resultsService;
-    constructor(resultsService) {
-        this.resultsService = resultsService;
+    resultService;
+    constructor(resultService) {
+        this.resultService = resultService;
     }
-    create(createResultDto) {
-        return this.resultsService.create(createResultDto);
-    }
-    findAll() {
-        return this.resultsService.findAll();
-    }
-    findOne(id) {
-        return this.resultsService.findOne(+id);
-    }
-    update(id, updateResultDto) {
-        return this.resultsService.update(+id, updateResultDto);
-    }
-    remove(id) {
-        return this.resultsService.remove(+id);
+    leaderboard(id) {
+        return this.resultService.getLeaderboard(id);
     }
 };
 exports.ResultsController = ResultsController;
 __decorate([
-    (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.Get)("tournament/:id"),
+    __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_result_dto_1.CreateResultDto]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
-], ResultsController.prototype, "create", null);
-__decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], ResultsController.prototype, "findAll", null);
-__decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], ResultsController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_result_dto_1.UpdateResultDto]),
-    __metadata("design:returntype", void 0)
-], ResultsController.prototype, "update", null);
-__decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], ResultsController.prototype, "remove", null);
+], ResultsController.prototype, "leaderboard", null);
 exports.ResultsController = ResultsController = __decorate([
-    (0, common_1.Controller)('results'),
+    (0, common_1.Controller)("results"),
     __metadata("design:paramtypes", [results_service_1.ResultsService])
 ], ResultsController);
 //# sourceMappingURL=results.controller.js.map

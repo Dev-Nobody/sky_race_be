@@ -1,9 +1,11 @@
-import { CreatePiegonDto } from './dto/create-piegon.dto';
-import { UpdatePiegonDto } from './dto/update-piegon.dto';
-export declare class PiegonsService {
-    create(createPiegonDto: CreatePiegonDto): string;
-    findAll(): string;
-    findOne(id: number): string;
-    update(id: number, updatePiegonDto: UpdatePiegonDto): string;
-    remove(id: number): string;
+import { Pigeon } from "src/db/entities/pigeon.entity";
+import { Repository } from "typeorm";
+import { CreatePigeonDto } from "./dto/create-pigeon.dto";
+export declare class PigeonsService {
+  private pigeonRepo;
+  constructor(pigeonRepo: Repository<Pigeon>);
+  add(dto: CreatePigeonDto): Promise<Pigeon>;
+  markStart(id: number): Promise<Pigeon>;
+  markLanding(id: number): Promise<Pigeon>;
+  getByParticipant(participantId: number): Promise<Pigeon[]>;
 }

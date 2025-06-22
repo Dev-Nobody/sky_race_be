@@ -14,28 +14,21 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TournamentsController = void 0;
 const common_1 = require("@nestjs/common");
-const tournaments_service_1 = require("./tournaments.service");
 const create_tournament_dto_1 = require("./dto/create-tournament.dto");
-const update_tournament_dto_1 = require("./dto/update-tournament.dto");
+const tournaments_service_1 = require("./tournaments.service");
 let TournamentsController = class TournamentsController {
-    tournamentsService;
-    constructor(tournamentsService) {
-        this.tournamentsService = tournamentsService;
+    tournamentService;
+    constructor(tournamentService) {
+        this.tournamentService = tournamentService;
     }
-    create(createTournamentDto) {
-        return this.tournamentsService.create(createTournamentDto);
+    create(dto) {
+        return this.tournamentService.createTournament(dto);
     }
     findAll() {
-        return this.tournamentsService.findAll();
+        return this.tournamentService.getAll();
     }
     findOne(id) {
-        return this.tournamentsService.findOne(+id);
-    }
-    update(id, updateTournamentDto) {
-        return this.tournamentsService.update(+id, updateTournamentDto);
-    }
-    remove(id) {
-        return this.tournamentsService.remove(+id);
+        return this.tournamentService.getById(id);
     }
 };
 exports.TournamentsController = TournamentsController;
@@ -53,29 +46,14 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TournamentsController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)(":id"),
+    __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], TournamentsController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_tournament_dto_1.UpdateTournamentDto]),
-    __metadata("design:returntype", void 0)
-], TournamentsController.prototype, "update", null);
-__decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], TournamentsController.prototype, "remove", null);
 exports.TournamentsController = TournamentsController = __decorate([
-    (0, common_1.Controller)('tournaments'),
+    (0, common_1.Controller)("tournaments"),
     __metadata("design:paramtypes", [tournaments_service_1.TournamentsService])
 ], TournamentsController);
 //# sourceMappingURL=tournaments.controller.js.map

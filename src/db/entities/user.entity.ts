@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { BaseEntity } from "./common/base.entity";
 import { Tournament } from "./tournament.entity";
-import { Loft } from "./loft.entity";
+// import { Loft } from "./loft.entity";
 
 export enum UserRole {
   ADMIN = "admin",
@@ -42,6 +42,6 @@ export class User extends BaseEntity {
   @OneToMany(() => Tournament, (tournament) => tournament.organizer)
   tournaments: Tournament[];
 
-  @OneToMany(() => Loft, (loft) => loft.user)
-  lofts: Loft[];
+  // @OneToMany(() => Loft, (loft) => loft.user)
+  // lofts: Loft[];
 }

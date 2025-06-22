@@ -1,6 +1,6 @@
-import { BaseEntity as TypeORMBaseEntity } from 'typeorm';
+import { BaseEntity as TypeORMBaseEntity } from "typeorm";
 export declare abstract class BaseEntity extends TypeORMBaseEntity {
     id: number;
-    createdAt: Date;
-    updatedAt: Date;
+    created_at: Date;
+    updated_at: Date;
 }

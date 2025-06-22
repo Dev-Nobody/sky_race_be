@@ -3,7 +3,7 @@
 import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
 import { BaseEntity } from "./common/base.entity";
 import { Tournament } from "./tournament.entity";
-import { PigeonTime } from "./piegonTime.entity";
+import { PigeonTime } from "./pigeonTime.entity";
 
 @Entity("day_results")
 export class DayResult extends BaseEntity {

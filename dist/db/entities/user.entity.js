@@ -13,7 +13,6 @@ exports.User = exports.UserRole = void 0;
 const typeorm_1 = require("typeorm");
 const base_entity_1 = require("./common/base.entity");
 const tournament_entity_1 = require("./tournament.entity");
-const loft_entity_1 = require("./loft.entity");
 var UserRole;
 (function (UserRole) {
     UserRole["ADMIN"] = "admin";
@@ -28,7 +27,6 @@ let User = class User extends base_entity_1.BaseEntity {
     is_verified;
     otp_code;
     tournaments;
-    lofts;
 };
 exports.User = User;
 __decorate([
@@ -63,10 +61,6 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => tournament_entity_1.Tournament, (tournament) => tournament.organizer),
     __metadata("design:type", Array)
 ], User.prototype, "tournaments", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => loft_entity_1.Loft, (loft) => loft.user),
-    __metadata("design:type", Array)
-], User.prototype, "lofts", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)("users")
 ], User);

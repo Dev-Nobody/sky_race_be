@@ -19,14 +19,15 @@ const throttler_1 = require("@nestjs/throttler");
 const users_module_1 = require("./users/users.module");
 const tournaments_module_1 = require("./tournaments/tournaments.module");
 const participants_module_1 = require("./participants/participants.module");
-const piegons_module_1 = require("./piegons/piegons.module");
 const results_module_1 = require("./results/results.module");
 const admin_module_1 = require("./admin/admin.module");
 const dayResult_entity_1 = require("./db/entities/dayResult.entity");
-const loft_entity_1 = require("./db/entities/loft.entity");
 const tournament_entity_1 = require("./db/entities/tournament.entity");
-const piegonTime_entity_1 = require("./db/entities/piegonTime.entity");
-const piegon_entity_1 = require("./db/entities/piegon.entity");
+const participants_entity_1 = require("./db/entities/participants.entity");
+const pigeons_module_1 = require("./pigeons/pigeons.module");
+const pigeon_entity_1 = require("./db/entities/pigeon.entity");
+const pigeonTime_entity_1 = require("./db/entities/pigeonTime.entity");
+const pigeon_time_module_1 = require("./pigeon-time/pigeon-time.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -63,14 +64,15 @@ exports.AppModule = AppModule = __decorate([
                 database: "mine",
                 autoLoadEntities: true,
                 synchronize: true,
-                entities: [user_entity_1.User, dayResult_entity_1.DayResult, loft_entity_1.Loft, piegon_entity_1.Pigeon, piegonTime_entity_1.PigeonTime, tournament_entity_1.Tournament],
+                entities: [user_entity_1.User, dayResult_entity_1.DayResult, participants_entity_1.Participant, pigeon_entity_1.Pigeon, pigeonTime_entity_1.PigeonTime, tournament_entity_1.Tournament],
             }),
             users_module_1.UsersModule,
             tournaments_module_1.TournamentsModule,
             participants_module_1.ParticipantsModule,
-            piegons_module_1.PiegonsModule,
+            pigeons_module_1.PigeonsModule,
             results_module_1.ResultsModule,
             admin_module_1.AdminModule,
+            pigeon_time_module_1.PigeonTimeModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

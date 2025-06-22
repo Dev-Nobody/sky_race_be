@@ -1,5 +1,6 @@
-import { CreatePiegonDto } from './create-piegon.dto';
-declare const UpdatePiegonDto_base: import("@nestjs/mapped-types").MappedType<Partial<CreatePiegonDto>>;
-export declare class UpdatePiegonDto extends UpdatePiegonDto_base {
-}
+import { CreatePigeonDto } from "./create-pigeon.dto";
+declare const UpdatePigeonDto_base: import("@nestjs/mapped-types").MappedType<
+  Partial<CreatePigeonDto>
+>;
+export declare class UpdatePigeonDto extends UpdatePigeonDto_base {}
 export {};

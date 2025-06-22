@@ -4,15 +4,15 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity as TypeORMBaseEntity,
-} from 'typeorm';
+} from "typeorm";
 
 export abstract class BaseEntity extends TypeORMBaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  createdAt: Date;
+  @CreateDateColumn({ type: "timestamp" })
+  created_at: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt: Date;
+  @UpdateDateColumn({ type: "timestamp" })
+  updated_at: Date;
 }

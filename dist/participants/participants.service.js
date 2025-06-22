@@ -5,28 +5,43 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ParticipantsService = void 0;
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("@nestjs/typeorm");
+const typeorm_2 = require("typeorm");
+const participants_entity_1 = require("../db/entities/participants.entity");
 let ParticipantsService = class ParticipantsService {
-    create(createParticipantDto) {
-        return 'This action adds a new participant';
+    participantRepo;
+    constructor(participantRepo) {
+        this.participantRepo = participantRepo;
     }
-    findAll() {
-        return `This action returns all participants`;
+    async addParticipant(dto) {
+        const participant = this.participantRepo.create({
+            user: { id: dto.user_id },
+            tournament: { id: dto.tournament_id },
+            number_of_pigeons: dto.number_of_pigeons,
+            profile_image_url: dto.profile_image_url,
+        });
+        return await this.participantRepo.save(participant);
     }
-    findOne(id) {
-        return `This action returns a #${id} participant`;
-    }
-    update(id, updateParticipantDto) {
-        return `This action updates a #${id} participant`;
-    }
-    remove(id) {
-        return `This action removes a #${id} participant`;
+    async listByTournament(tournamentId) {
+        return await this.participantRepo.find({
+            where: { tournament: { id: tournamentId } },
+            relations: ["user", "tournament"],
+        });
     }
 };
 exports.ParticipantsService = ParticipantsService;
 exports.ParticipantsService = ParticipantsService = __decorate([
-    (0, common_1.Injectable)()
+    (0, common_1.Injectable)(),
+    __param(0, (0, typeorm_1.InjectRepository)(participants_entity_1.Participant)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], ParticipantsService);
 //# sourceMappingURL=participants.service.js.map

@@ -1,9 +1,9 @@
-import { CreateParticipantDto } from './dto/create-participant.dto';
-import { UpdateParticipantDto } from './dto/update-participant.dto';
+import { Repository } from "typeorm";
+import { CreateParticipantDto } from "./dto/create-participant.dto";
+import { Participant } from "src/db/entities/participants.entity";
 export declare class ParticipantsService {
-    create(createParticipantDto: CreateParticipantDto): string;
-    findAll(): string;
-    findOne(id: number): string;
-    update(id: number, updateParticipantDto: UpdateParticipantDto): string;
-    remove(id: number): string;
+    private participantRepo;
+    constructor(participantRepo: Repository<Participant>);
+    addParticipant(dto: CreateParticipantDto): Promise<Participant>;
+    listByTournament(tournamentId: number): Promise<Participant[]>;
 }

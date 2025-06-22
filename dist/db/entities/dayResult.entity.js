@@ -13,7 +13,7 @@ exports.DayResult = void 0;
 const typeorm_1 = require("typeorm");
 const base_entity_1 = require("./common/base.entity");
 const tournament_entity_1 = require("./tournament.entity");
-const piegonTime_entity_1 = require("./piegonTime.entity");
+const pigeonTime_entity_1 = require("./pigeonTime.entity");
 let DayResult = class DayResult extends base_entity_1.BaseEntity {
     date;
     tournament;
@@ -29,7 +29,7 @@ __decorate([
     __metadata("design:type", tournament_entity_1.Tournament)
 ], DayResult.prototype, "tournament", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => piegonTime_entity_1.PigeonTime, (pt) => pt.day_result),
+    (0, typeorm_1.OneToMany)(() => pigeonTime_entity_1.PigeonTime, (pt) => pt.day_result),
     __metadata("design:type", Array)
 ], DayResult.prototype, "pigeon_times", void 0);
 exports.DayResult = DayResult = __decorate([

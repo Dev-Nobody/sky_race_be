@@ -1,2 +1,1 @@
-export declare class PiegonsModule {
-}
+export declare class PigeonsModule {}

@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PigeonTime = void 0;
 const typeorm_1 = require("typeorm");
 const base_entity_1 = require("./common/base.entity");
-const piegon_entity_1 = require("./piegon.entity");
+const pigeon_entity_1 = require("./pigeon.entity");
 const dayResult_entity_1 = require("./dayResult.entity");
 let PigeonTime = class PigeonTime extends base_entity_1.BaseEntity {
     pigeon;
@@ -23,8 +23,8 @@ let PigeonTime = class PigeonTime extends base_entity_1.BaseEntity {
 };
 exports.PigeonTime = PigeonTime;
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => piegon_entity_1.Pigeon, (pigeon) => pigeon.times),
-    __metadata("design:type", piegon_entity_1.Pigeon)
+    (0, typeorm_1.ManyToOne)(() => pigeon_entity_1.Pigeon, (pigeon) => pigeon.times),
+    __metadata("design:type", pigeon_entity_1.Pigeon)
 ], PigeonTime.prototype, "pigeon", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => dayResult_entity_1.DayResult, (result) => result.pigeon_times),

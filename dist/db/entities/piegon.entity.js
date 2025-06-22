@@ -12,11 +12,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Pigeon = void 0;
 const typeorm_1 = require("typeorm");
 const base_entity_1 = require("./common/base.entity");
-const loft_entity_1 = require("./loft.entity");
-const piegonTime_entity_1 = require("./piegonTime.entity");
+const pigeonTime_entity_1 = require("./pigeonTime.entity");
+const participants_entity_1 = require("./participants.entity");
 let Pigeon = class Pigeon extends base_entity_1.BaseEntity {
     name;
-    loft;
+    color;
+    participant;
+    start_time;
+    end_time;
+    duration_seconds;
     times;
 };
 exports.Pigeon = Pigeon;
@@ -25,11 +29,28 @@ __decorate([
     __metadata("design:type", String)
 ], Pigeon.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => loft_entity_1.Loft, (loft) => loft.pigeons),
-    __metadata("design:type", loft_entity_1.Loft)
-], Pigeon.prototype, "loft", void 0);
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Pigeon.prototype, "color", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => piegonTime_entity_1.PigeonTime, (pt) => pt.pigeon),
+    (0, typeorm_1.ManyToOne)(() => participants_entity_1.Participant),
+    (0, typeorm_1.JoinColumn)({ name: "participant_id" }),
+    __metadata("design:type", participants_entity_1.Participant)
+], Pigeon.prototype, "participant", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "timestamp", nullable: true }),
+    __metadata("design:type", Date)
+], Pigeon.prototype, "start_time", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "timestamp", nullable: true }),
+    __metadata("design:type", Date)
+], Pigeon.prototype, "end_time", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "int", nullable: true }),
+    __metadata("design:type", Number)
+], Pigeon.prototype, "duration_seconds", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => pigeonTime_entity_1.PigeonTime, (pt) => pt.pigeon),
     __metadata("design:type", Array)
 ], Pigeon.prototype, "times", void 0);
 exports.Pigeon = Pigeon = __decorate([
